@@ -1,22 +1,20 @@
 #include <Arduino.h>
-#include <bits/stdc++.h>
-using namespace std;
 
-// put function declarations here:
-int myFunction(int, int);
+// declarations here:
+int num = 0;
 
-void setup() {
-  // put your setup code here, to run once:
-  cout<<"gata tu byla"<<endl;
+void setup() { // this will run once
+  Serial.begin(9600); // this is optimal baud-rate - I TESTED IT MYSELF
+  // for some reason it wont print anything here, even after some pause
+  // it goes straight to loop()
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  delay(1000);
-  cout<<"waaa"<<endl;
+  if(Serial.available() > 0){
+    num = Serial.parseInt();
+    Serial.println("twice your number: ");
+    Serial.println(num*2);
+  }
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+// function definitions here:
