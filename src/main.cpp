@@ -2,15 +2,20 @@
 #include <map>
 #include <vector>
 #include "BluetoothSerial.h"
+#include <ESP32Servo.h>
 using namespace std;
 
 // wires are connected like this:
-//    D23 (1)   D19 (4)
-//    D22 (2)   D18 (5)
-//    D21 (3)   D17 (6)
+//    D27 (1)   D32 (4)
+//    D13 (2)   D33 (5)
+//    D14 (3)   D25 (6)
+
+#define UP_POSITION 170
+#define DOWN_POSITION 150
+
 
 // declarations here: 
-int8_t pin[7] = {0, 23, 22, 21, 19, 18, 17};
+// int8_t pin[7] = {0, 27, 13, 14, 32, 33, 25};
 uint32_t mask = 0;
 int8_t size = 0;
 int8_t pin_number = 0;
@@ -18,6 +23,8 @@ char num = 0;
 char prev_char = 0;
 
 BluetoothSerial SerialBT;
+
+Servo a,b,c,d,e,f;
 
 std::map<char, vector<int8_t> > mapping = {
 	// latin alphabet letters
@@ -72,32 +79,33 @@ void charToBraille(char l);
 // all letters from some long text
 // void textToBraille(String &t);
 
+void pin_up(int id);
+void pin_down(int id);
+
 
 // this will run only once:
 void setup() {
-	// here I activate my LED pins for output to give voltage to leds
-	gpio_set_direction(GPIO_NUM_23, GPIO_MODE_OUTPUT);
-	gpio_set_direction(GPIO_NUM_22, GPIO_MODE_OUTPUT);
-	gpio_set_direction(GPIO_NUM_21, GPIO_MODE_OUTPUT);
-	gpio_set_direction(GPIO_NUM_19, GPIO_MODE_OUTPUT);
-	gpio_set_direction(GPIO_NUM_18, GPIO_MODE_OUTPUT);
-	gpio_set_direction(GPIO_NUM_17, GPIO_MODE_OUTPUT);
-
-	// Serial.begin(9600); // this is optimal baud-rate - I TESTED IT MYSELF
-	// for some reason it wont print anything here, even after some pause
-	// it goes straight to loop()
-	Serial.begin(9600);
+	Serial.begin(9600); // this is optimal baud-rate - I TESTED IT MYSELF
 	SerialBT.begin("TextToBraille");
+
+	// this is exactly how my servos are connected to GPIO pins
+	a.attach(25);
+	b.attach(33);
+	c.attach(32);
+	d.attach(14);
+	e.attach(13);
+	f.attach(27);
 }
 
 
-// this code will be looped:
+int i = 0;
 void loop() {
 	if (SerialBT.available()){
 		char letter = SerialBT.read();
 		Serial.println(letter);
-		charToBraille(letter);
+		charToBraille(tolower(letter));
 		prev_char = letter;
+		delay(300);
 	}
 }
 
@@ -111,39 +119,81 @@ bool is_number(char c){
 	return c >= '0' && c <= '9';
 }
 
-uint32_t gen_char_mask(char l){
-	mask = 0;
-	size = mapping[l].size();
-	for(int j = 0; j < size; j++){
-		pin_number = mapping[l][j];
-		mask |= (1UL << pin[pin_number]);
+void pin_up(int id){
+	switch(id){
+		case 1:
+			a.write(UP_POSITION);
+			break;
+		case 2:
+			b.write(UP_POSITION);
+			break;
+		case 3:
+			c.write(UP_POSITION);
+			break;
+		case 4:
+			d.write(UP_POSITION);
+			break;
+		case 5:
+			e.write(UP_POSITION);
+			break;
+		case 6:
+			f.write(UP_POSITION);
+			break;
 	}
-	return mask;
 }
 
-void display_letter_by_mask(uint32_t m){
-	GPIO.out_w1ts = m;
-	delay(500);
-	GPIO.out_w1tc = m;
-	delay(200);
+void pin_down(int id){
+	switch(id){
+		case 1:
+			a.write(DOWN_POSITION);
+			break;
+		case 2:
+			b.write(DOWN_POSITION);
+			break;
+		case 3:
+			c.write(DOWN_POSITION);
+			break;
+		case 4:
+			d.write(DOWN_POSITION);
+			break;
+		case 5:
+			e.write(DOWN_POSITION);
+			break;
+		case 6:
+			f.write(DOWN_POSITION);
+			break;
+	}
+}
+
+
+void display_letter(char l){
+	for(auto pin : mapping[l]){
+		pin_up(pin);
+	}
+	delay(1000);
+	for(auto pin : mapping[l]){
+		pin_down(pin);
+	}
+	delay(1000);
 }
 
 void charToBraille(char l){
 	if(is_capital(l)){
-		display_letter_by_mask(gen_char_mask('#'));
-		display_letter_by_mask(gen_char_mask(tolower(l)));
+		display_letter('#');
+		display_letter(tolower(l));
 	}
 	else if(is_number(l)){
 		if(!is_number(prev_char))
-			display_letter_by_mask(gen_char_mask('~'));
+			display_letter('~');
 		num = 'j'; // j = 0
 		if(l > '0') // 1 = a, 2 = b ... 9 = k
 			num = l+48; 
-		display_letter_by_mask(gen_char_mask(num));
+		display_letter(num);
 	}
 	else
-		display_letter_by_mask(gen_char_mask(l));
+		display_letter(l);
 }
+
 
 // void textToBraille(string &t){
 // 	for(int i = 0; i < t.size(); i++){
