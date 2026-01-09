@@ -39,4 +39,4 @@ Then if your device is connected, you should be able to send the visible scanned
 After successfull connecting device to translator, it's possible to disconnect it by clicking a dedicated button.
 
 
-# If you have some idea that you think might improve this project - you may reach to me here:*agatapokorska7@gmail.com*
+# If you have some idea that you think might improve this project - you may reach to me here: *agatapokorska7@gmail.com*
