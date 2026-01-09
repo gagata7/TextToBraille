@@ -1,0 +1,399 @@
+% Opcje klasy 'iithesis' opisane sa w komentarzach w pliku klasy. Za ich pomoca
+% ustawia sie przede wszystkim jezyk oraz rodzaj (lic/inz/mgr) pracy.
+
+\documentclass[shortabstract]{iithesis}
+\usepackage[polish]{babel}
+\usepackage[
+backend=biber,
+style=numeric,
+sorting=none
+]{biblatex}
+\usepackage{hyperref}
+\renewcommand*{\supercite}[1]{\textsuperscript{\cite{#1}}}  % opcjonalne
+\addbibresource{bibliography.bib}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+% Formatowanie tytułu rozdziału
+\titleformat{\chapter}[hang] % styl: "hang" = tytuł z numerem
+  {\normalfont\huge\bfseries} % czcionka
+  {\thechapter} % numer rozdziału
+  {1em} % odstęp między numerem a tytułem
+  {}    % dodatkowy kod przed tytułem (pusty)
+
+\titlespacing*{\section}
+{0pt}      % wcięcie z lewej
+{3em}      % odstęp PRZED sekcją
+{2ex}    % odstęp PO sekcji
+
+\titlespacing*{\subsection}
+{0pt}
+{2pt}
+{1pt}
+
+
+% Odstępy przed i po tytule rozdziału
+\titlespacing*{\chapter}
+  {0pt}   % wcięcie od lewej
+  {-5pt}   % odstęp przed tytułem rozdziału
+  {5pt}  % odstęp po tytule rozdziału (między tytułem a treścią)
+
+%%%%% DANE DO STRONY TYTUĹOWEJ
+% Niezaleznie od jezyka pracy wybranego w opcjach klasy, tytul i streszczenie
+% pracy nalezy podac zarowno w jezyku polskim, jak i angielskim.
+% Pamietaj o madrym (zgodnym z logicznym rozbiorem zdania oraz estetyka) recznym
+% zlamaniu wierszy w temacie pracy, zwlaszcza tego w jezyku pracy. Uzyj do tego
+% polecenia \fmlinebreak.
+\polishtitle    {Dotykowy translator tekstu do Braille'a}
+\englishtitle   {Text to tactile Braille output translator}
+\polishabstract {\ldots}
+\englishabstract{\ldots}
+% w pracach wielu autorow nazwiska mozna oddzielic poleceniem \and
+\author         {Agata Pokorska}
+% w przypadku kilku promotorow, lub koniecznosci podania ich afiliacji, linie
+% w ponizszym poleceniu mozna zlamac poleceniem \fmlinebreak
+\advisor        {dr Marek Materzok}
+\date          {5 luty 2026}                     % Data zlozenia pracy
+% Dane do oswiadczenia o autorskim wykonaniu
+\transcriptnum {339102}                     % Numer indeksu
+\advisorgen    {dr. Marka Materzoka} % Nazwisko promotora w dopelniaczu
+%%%%%
+
+\usepackage{tocloft}
+
+\setlength{\parindent}{0pt}
+\polishabstract{
+W tej pracy przedstawiam opis urządzenia i aplikacji, które w połączeniu umożliwiają zamianę dowolnego tekstu pozyskanego z obrazu
+na wyczuwalną dotykiem reprezentację kolejnych znaków w alfebecie Braille'a. Zapoznaję czytelnika z dostępnymi obecnie rozwiązaniami, 
+ich zaletami i wadami. Porównuję z nimi swój pomysł i prezentuję szczegółową analizę rozwiązania i kosztów z nim związanych.
+}
+\englishabstract{
+In this paper I introduce my idea for a refreshable Braille translator (display) device and an application that together enable reader 
+to translate text from a photo into tactile Braille output. I also review currently available solutions, highlighting their pros and cons, 
+and compare them with my own idea. In the end I present a detailed analysis of how it works and costs involved.
+}
+
+%%%%% WLASNE DODATKOWE PAKIETY
+%
+%\usepackage{graphicx,listings,amsmath,amssymb,amsthm,amsfonts,tikz}
+%
+%%%%% WĹASNE DEFINICJE I POLECENIA
+% \theoremstyle{definition} 
+\newtheorem{definition}{Definicja}
+% \renewcommand\thedefinition{}
+%\theoremstyle{remark} \newtheorem{remark}[definition]{Observation}
+%\theoremstyle{plain} \newtheorem{theorem}[definition]{Theorem}
+%\theoremstyle{plain} \newtheorem{lemma}[definition]{Lemma}
+% \renewcommand \qedsymbol {\ensuremath{\square}}
+% ...
+%%%%%
+
+\begin{document}
+
+%%%%% POCZÄTEK ZASADNICZEGO TEKSTU PRACY
+
+
+\chapter{Wprowadzenie}
+\begin{definition}
+Aplikacja: oprogramowanie umożliwiające użytkownikowi interaktywne korzystanie z translatora.
+\end{definition}
+
+\begin{definition}
+Translator: urządzenie odpowiadające za translację do Braille'a otrzymanego znaku tekstu, oraz wyświetlenie jego Braille'owskiej reprezentacji.
+\end{definition}
+
+\begin{definition}
+Pin: jeden z sześciu punków znaku Braille'a. Może być w stanie płaskim (schowanym) lub wypukłym (wysuniętym).
+\end{definition}
+    % Opis i analiza zagadnienia stanowiącego temat pracy.
+\section{Przedmiot pracy}
+Przedmiotem mojej pracy są \textit{translator}, oraz aplikacja \textit{TextToBraille} umożliwiająca korzystanie z urządzenia.
+
+Aplikacja zaprojektowana bazowo na smartfony z systemem Android, służy do wykonania zdjęcia konkretnego tekstu, który następnie jest przesyłany do translatora 
+i na jego podstawie, generowane jest odwzorowanie wyczuwalne dotykiem znaków tegoż tekstu w alfabecie Braille'a.
+
+Translator wraz z aplikacją dają osobom niewidomym możliwość odczytu \textit{dowolnego} tekstu, który da się uchwycić aparatem smartfona.
+
+\section{Skąd taki pomysł}
+Problem z dostępnymi obecnie na rynku wyświetlaczami Braille'a jest taki, że są \textit{niezwykle drogie}. Jako istotne dla tego faktu czynniki wyróżniam:
+\begin{itemize}
+    \item Moduł do wyświetlania pojedynczego znaku Braille'a nie jest typowym komponentem elektronicznym.
+    \item Ze względu na złożoność konstrukcji koszt wyświetlenia pojedynczego znaku jest wysoki.
+    \item Popyt na tego typu produkty jest stosunkowo niski.
+\end{itemize}\par
+
+\newpage
+Najbardziej powszechnym rozwiązaniem dla osób niewidomych pozostają audiobooki lub inne rozwiązania wykorzystujące technologię \textit{text-to-speech},
+co jednak okazuje się średnim kompromisem. W badaniu \cite{SABOURIN2022999} sprawdzono, czy utrata wzroku powoduje znaczące polepszenie słuchu. 
+W skrócie, wychodzi na to, że nie. Mózg osoby niewidomej jest do pewnego stopnia neuroplastyczny, co pozwala na "dostrajanie" się do specyficznych bodźców z otoczenia, 
+jednak nie powoduje to ogólnego polepszenia słuchu. Z kolei przeciwnie można powiedzieć o zmyśle dotyku. W tym \cite{Goldreich3439} badaniu zasugerowano, 
+że osoby niewidome wykazują się zauważalnie wyższą czułością dotykową niż osoby widzące.
+Ludzie przyswajają informacje na \textit{różne sposoby}. Niektórzy preferują wzrokowo, inni słuchowo, jeszcze inni muszą się poruszać czy poczuć dany obiekt, 
+aby zostały stworzone odpowiednie połączenia neuronalne w procesie uczenia się. Warto więc zadbać, żeby osoby niewidome też miały zróżnicowane możliwości przyswajania informacji.\newline
+
+
+Chciałabym też wspomnieć o osobistym doświadczeniu, które dalej pozostaje motorem do rozwoju tego projektu. Będąc w bibliotece w swoim rodzinnym mieście, 
+zapytałam o zbiór pozycji dostępnych dla osób niewidomych. Na całą bibliotekę, była tylko jedna książka \cite{cottin} napisana Braillem. 
+Przyglądając się książce dłużej i z bliska, zauważyłam że paredziesiąt znaków Braille'a było zwyczajnie wytartych od użytkowania. Ta książka miała dopiero cztery lata, 
+a już była zużyta na tyle, żeby utrudnić czytanie. Uwzględniając do tego tempo degradacji książek drukowanych tradycyjnie, nie brzmi to sprawiedliwie w stosunku do osób niewidomych.
+
+Podsumowując -- sądzę, że pomimo ogólnodostępnych narzędzi korzystających z technologii text-to-speech, warto dalej skupiać się na rozwoju nowych i ulepszaniu 
+dostępnych rozwiązań konwertujących tekst do Braille'a.
+
+
+\chapter{Przegląd i analiza dostępnych rozwiązań}
+    % Porównanie z innymi znanymi rozwiązaniami (implementacjami).
+    Dostępne rozwiązania podzielę na trzy główne kategorie wg. zastosowanych przez nie technologii tj. elektromagnetyczne, piezoelektryczne oraz inne, czyli takie, które różnią się swoim podejściem od klasycznych urządzeń z dwóch pierwszych kategorii.
+
+
+
+\section{Rozwiązanie wykorzystujące zjawisko elektromagnetyzmu}
+    Przykładowe urządzenie wykorzystujące elektromagnetyzm wygląda następująco \cite{electromag}. Upraszczając, elektromagnes zmienia swoją \textit{polaryzację} w zależności od obecności ładunku elektrycznego.
+    Dzięki tej właściwości powoduje on odpowiednio przyciąganie lub odpychanie innego magnesu. We wspomnianym wcześniej przykładzie magnes został umieszczony w środku głowicy, 
+    która płynnym ruchem obrotowym (góra/dół) powoduje podbicie/spadek jednego z sześciu pinów znaku Braille'a. Mechanizm ten możemy kojarzyć również z popularnych 
+    czytników E-ink \cite{eink} (np. Kindle)
+
+\subsubsection{Zalety i wady zastosowania elektromagnetyzmu}
+    Powyższe rozwiązanie wygląda dość obiecująco. Z zalet, mogę wymienić otwartoźródłowość oraz to, że szacowany koszt produkcji takiego komponentu jest niski. 
+    Widzę w nim jednak kilka wad.
+    
+    Oto cytat bezpośrednio z logów wymienionego wyżej projektu \cite{projectlogs}: \textit{"Having access to a printer directly made all the difference when iterating for 20-30 µm tolerances. 
+    At these sizes, you can't really trust the CAD software anymore, and every assembly has to be empirically tested by printing it out."}
+    Autor odnosi się tutaj do trudności w wytworzeniu pojedynczego modułu, ze względu na jego bardzo mały rozmiar i twierdzi, że każdy komponent musi zostać złożony a następnie sprawdzony 
+    pod kątem poprawności działania. Inny problem jaki dostrzegam, to szybkie nagrzewanie się elektromagnesu \cite{drsolenoid}. Wymaga to kolejnych części do odprowadzania ciepła, 
+    co jeszcze bardziej komplikuje już i tak gęsto zwartą konstrukcję. Kolejny problem jaki widzę, związany jest z tarciem wywoływanym przez ruch głowicy, 
+    co może powodować stopniowe zużywanie się układu. Przy takich rozmiarach komponentów, wszelkie drobne różnice w strukturze, kurz, czy innego rodzaju zanieczyszczenia mogą powodować zakłócenia w prawidłowej pracy.
+
+
+    \section{Rozwiązania wykorzystujące zjawisko piezoelektryczności}
+    Przechodząc do następnej kategorii rozwiązań, wykorzystujących piezoelektryki, należy wspomnieć na czym to polega. Jest to właściwość konkretnych materiałów (np. kwarcu),
+    która sprawia, że w momencie oddziaływania siły na ten materiał, powstaje energia elektryczna.
+    Czytniki Braille'a używają dokładnie \textit{odwrotnej zasady}, czyli poprzez zastosowania odpowiedniego prądu,
+    materiał zaczyna odkształcać się w mniej lub bardziej kontrolowany sposób. Na rynku dostępne są tzw. siłowniki piezoelektryczne \cite{GIRAUD20191}  jak np. \cite{piezobend}, 
+    który nawiasem mówiąc przez ostatnie 2 lata, podrożał o ponad 80 USD. Ewentualnie bardziej budżetowa opcja \cite{piezobendcheap}. Nadal jednak koszt pojedynczych komponentów jest bardzo wysoki.
+    Do wyświetlenia \textit{pojedynczego} znaku Braille'a, potrzebujemy aż sześć tego rodzaju siłowników. W filmie \cite{brailleliteyt} autor rozkłada na części popularny komercyjny 
+    wyświetlacz Braille Lite 2000 \cite{braillelite2000}.
+
+\subsubsection{Zalety i wady zastosowania piezoelektryków}
+    Główną wadą związaną z użyciem tej technologii w wyświetlaczach jest ich cena. Najtańszy wyświetlacz jaki udało mi się znaleźć \cite{orbidreader}
+    kosztuje zawrotne 800 USD. Inną wadą jest potrzeba prawidłowej konserwacji takiego urządzenia, ze względu na ilość otworów, w które może dostać się brud, co może nawet uszkodzić wyświetlacz.
+    
+    Zaletą jest ich zgrabny wygląd i stosunkowo niewielki rozmiar. 
+    Innym argumentem działającym na korzyść czytnika, jest też fakt prostej przewagi nad audiobookami. Nawet taki dość drogi czytnik, pozostanie naszą własnością na zawsze i mamy gwarancję, 
+    że będzie działał. Jeśli chodzi o audiobooki, kupowane pojedynczo są drogie i jeśli ktoś \textit{naprawdę} bardzo to lubi, to będzie go to słono kosztowało 
+    przy kilkudziesięciu egzemplarzach. Może nawet więcej niż koszt komercyjnego czytnika. Jeśli zaś nie interesuje nas kupowanie audiobooków, można wtedy skorzystać z oferowanych modeli 
+    subskrybcyjnych jak np. EmpikGo, Legimi czy Audible. Łatwo jednak zauważyć, że w obu tych przypadkach audiobooki tak naprawdę nigdy nie należą do nas, tylko są trzymane w chmurze aplikacji. 
+    Zauważmy też, że mimo bogatej oferty audiobooków, dalej istnieje szansa, że nie znajdziemy tam tego, czego akurat chcemy np. podręczników do nauki. Może więc jednorazowy wydatek w wysokości 800 USD 
+    nie brzmi aż taki źle, biorąc pod uwagę, że daje to możliwość odczytania dowolnego tekstu.\newline
+\vspace{3em}
+
+\section{Inne dostępne rozwiązania warte uwagi}
+    Na koniec omówię pozostałe istniejące rozwiązania, mniej lub bardziej efektywne. Warto wspomnieć iż oprócz czytników istnieją też książki fabrycznie drukowane Braillem 
+    za pomocą specjalnie stworzonego do tego mechanizmu \cite{enwiki:1321563538}, który powstał już w roku 1892. Koszt produkcji takich książek jest jednak 
+    horrendalnie wysoki (nawet czterokrotnie wyższy w porównaniu do ich drukowanych tradycyjnie odpowiedników). Katalog popularnych książek drukowanych Braillem znajduje się w \cite{popularbooks}.
+
+    Jednym z bardziej kompaktowych rozwiązań jest BrailleRing \cite{TremlBusseDünserBusboomZagler+2020}, który również pozwala na odczytywanie linii tekstu, jednak robi to w sposób zupełnie inny. Urządzenie to przyjmuje kształt pierścienia a wewnątrz ma wbudowane dwadzieścia modułów.
+    Moduł składa się z sześciu pinów i służy do wyświetlenia pojedynczego znaku Braille'a. Sześć pinów w module zostało podzielone na trzy poziome grupy, każda po dwa piny (dwa górne, dwa środkowe i dwa dolne). Para pinów ma czery możliwe stany: oba opuszczone, jeden z nich podniesiony lub oba podniesione.
+    Każda taka kombinacja pary pinów jest odwzorowana na jednej ze ścian czworokąta, który ma możliwość obrotu o 90 stopni. Poprzez wybór odpowiedniej grupy i rotacje, możemy za pomocą jednego modułu przedstawić dowolny znak Braille'a. Pomysł jest o tyle innowacyjny, że właśnie dzięki ułożeniu modułów w pierścień,
+    w jego górnej połowie moduły najpierw są obracane do reprezentacji odpowiednich znaków, a następnie użytkownik poruszając palcem po wnętrzu dolnej połowy pierścienia, sam nadaje tempo czytania podsuwając sobie kolejne znaki linii.
+    Taka architektura znacznie ogranicza liczbę potrzebnych siłowników do dziewięciu. Jeden siłownik jest w stanie obrócić jedną ścianę czworokąta, z czego do zmiany reprezentacji są potrzebne maksymalnie trzy zmiany.
+
+    Jeszcze inny pomysł, wywodzi się z popularnego serwisu z otwartoźródłowymi projektami do druku 3D, Thingiverse \cite{thingiverse}. 
+    Projekt ten wykorzystuje silniki do poruszania długą zębatkową przekładnią, która obsługuje trzy z sześciu pinów (jedną kolumnę) i pozycja tejże przekładni (czyli to jak bardzo jest przesunięta w lewo lub w prawo) 
+    odwzorowuje jedną z ośmiu kombinacji tych trzech pinów. Rozwiązanie różni się od pozostałych, gdyż działa w pełni mechanicznie. Potencjalne problemy jakie tu widzę, to fakt iż drukarka 3D ma swoje ograniczenia,
+    jeśli chodzi o precyzję w tak małej skali oraz to, że w pełni mechaniczny moduł jest podatny na nadmierne tarcie części o siebie i wynikające z tego powodu uszkodzenia.
+\vspace{20em}
+
+
+\chapter{Porównanie zastosowanych w projekcie rozwiązań}
+% Opis zastosowanych/wynalezionych rozwiązań, czyli to, czym student chce się w projekcie pochwalić.
+
+\begin{definition}
+Serwo: potoczna nazwa na serwomechanizm, w tym przypadku wprawiający w ruch śmigło sterujące wysokością położenia pinu
+\end{definition}
+
+\section{Translator}
+Na urządzenie składa się zaledwie kilka komponentów:
+\begin{itemize}
+    \item ESP32 WiFi+BT 4.2 WROOM-32 (mózg układu),
+    \item trzy mikroserwa 3.3V oraz trzy mikroserwa 5V (to podbija piny),
+    \item sześć walców o 20mm x 6mm wydrukowanych w 3D z plastiku (to są właśnie piny, one są bezpośrednio wyczuwalne palcami),
+    \item uniwersalna płytka PCB 5cm x 7cm dwustronna (tu jest zamocowana cała elektronika),
+    \item trzy konwertery poziomów logicznych napięć 2CH 3.3V/5V (gdyż ESP32 działa na 3.3V a serwa potrzebują wyższego napięcia),
+    \item kabel USB do USB-C (potrzebny do zasilania układu),
+    \item kartonowe pudełko po Samsungu Galaxy S20,
+    \item zworki, klej na gorąco i mocna szara taśma.
+\end{itemize}
+
+Oprogramowanie translatora zostało zaimplementowane w języku C++. 
+Cała komunikacja translatora z aplikacją (i odwrotnie) odbywa się za pomocą technologii Bluetooth 4.2.
+
+Szczegóły implementacji znajdują się w moim repozytorium poświęconym rozwojowi tego projektu \cite{texttobraillerepo}
+
+\newpage
+\subsubsection{Przepływ komunikacji od aplikacji, do translatora}
+Najpierw zostaje uruchomiony kanał komunikacji Bluetooth między ESP32 a podłączoną aplikacją na smartfonie.
+Następnie kolejne znaki tekstu z aplikacji zostają przesłane do mikrokontrolera.
+W kolejnym kroku każdy pojedynczy znak zostaje przechwycony, a następnie zostaje znaleziona jego reprezentacja za pomocą odpowiednich pinów.
+W ostatnim kroku serwa odpowiadające konkretnym pinom, obecnym w reprezentacji danego znaku - zmieniają pozycję ze 150 stopni (dół) na 170 stopni (góra) co powoduje podbicie pinu.
+Stan ten jest podtrzymywany przez sekundę a następnie wszystkie piny zostają sprowadzone do stanu pierwotnego (dół).
+Po każdym wyświetleniu znaku następuje krótka przerwa o długości 300 ms.
+\section{Aplikacja}
+Najważniejszym zadaniem aplikacji jest wykorzystanie istniejącego, wbudowanego w smartfon aparatu w następujący sposób: 
+
+Najpierw wybieramy sobie tekst, który nas interesuje. Najlepiej taki kontrastujący z tłem (np. książka - czarny tekst na białym tle). 
+Następnie wykonujemy za pomocą aplikacji zdjęcie tego tekstu.
+Potem używając dostępnego modelu AI do rozpoznawania tekstu z obrazu \cite{textreco}, ze zdjęcia zostaje przechwycony tekst.
+Tekst zostanie wyświetlony do podglądu w aplikacji. Dzięki czemu wiemy co zostało uchwycone i w jaki sposób.
+Na koniec ten właśnie tekst możemy nadpisać -- powtarzając powyższe kroki na nowo, albo wysłać do translatora za pomocą dedykowanego przycisku.
+
+\newpage
+\section{Zalety i wady mojego rozwiązania}
+    Po omówieniu mojego rozwiązania, jak i tych z poprzedniego rozdziału, przedstawię jego zalety i wady. Zalety wyglądają następująco:
+    
+\begin{itemize}
+    \item Prostota konstrukcji -- na pojedynczy pin przypada jeden serwomechanizm.
+    \item Użycie gotowych, dostępnych na rynku tanich części elektronicznych.
+    \item Relatywnie niski koszt produkcji w porównaniu do pozostałych rozwiązań.
+    \item Piny są lekkie, plastikowe, ważą mniej niż 1 gram zatem serwo praktycznie nie traci energii przy podtrzymywaniu stanu pinu.
+    \item Wszystkie piny są synchronizowane jednocześnie.
+    \item Dedykowana aplikacja, łącząca się z translatorem przy użyciu Bluetooth (tak jak pozostałe urządzenia).
+    \item Ze względu na duże gabaryty translatora, jest on odporny na kurz i pył.
+\end{itemize}
+
+
+A teraz wady, które są jednak dość istotne w odniesieniu do pomysłu na projekt:
+\begin{itemize}
+    \item Na ten moment urządzenie wyświetla pojedyncze znaki tekstu po kolej.
+    \item Znak jest wyświetlany statycznie -- co jak wykazano w \cite{10.1007/3-540-58476-5_169} nie jest optymalnym sposobem wyświetlania tekstu.
+    \item Translator jest dość dużych rozmiarów jak na jeden znak.
+\end{itemize}
+    
+
+
+\chapter{Instrukcja dla użytkowników}
+\section{Do czego służy aplikacja}
+ % Część dla użytkowników:
+        % ogólny opis, do czego służy program
+Zadaniem aplikacji jest komunikacja użytkownika z translatorem. Użytkownik poprzez interfejs aplikacji ma możliwość wykonania zdjęcia, oraz przesłania wyekstraktowanego 
+tekstu do przetłumaczenia do translatora.
+
+\section{Jak zainstalować aplikację}
+% sposób instalacji lub dostępu do działającego systemu
+Aplikację można zainstalować pobierająć plik \textit{texttobraille.apk} z mojego repozytorium \cite{texttobraillerepo} a następnie instalując go na urządzeniu.
+\textit{Aby poprawnie zainstalować plik .apk na smartfonie z Androidem, należy wcześniej zezwolić na instalowanie aplikacji z zewnętrznych źródeł. Instrukcja jak wykonać to poprawnie znajduje się w} \cite{installapk}.
+
+\section{Jak używać aplikacji}
+Po otwarciu aplikacji \textit{TextToBraille} naszym oczom ukazuje się pusty obszar w kolorze jasnego fioletu i cztery ciemnofioletowe guziki. 
+Funkcje elementów interfejsu zostały opisane poniżej:
+
+\textbf{Widok tekstowy -- wyświetla rozpoznany tekst ze zrobionego zdjęcia}
+
+\textbf{Connect -- inicjuje rozpoczęcie komunikacji po Bluetooth z translatorem}
+
+\textbf{Disconnect -- przerywa istniejące połączenie Bluetooth z translatorem}
+
+\textbf{Photo -- uruchamia systemową aplikację do robienia zdjęć}
+
+\textbf{Send -- przesyła niepusty tekst w widoku tekstowym do translatora}
+
+
+\section{Jak używać translatora}
+Translator w pierwszej kolejności należy podłączyć do gniazda zasilania USB.
+Po podłączeniu translator jest w pełni gotowy, aby połączyć się ze smartfonem za pomocą aplikacji. 
+\textit{Aby translator działał poprawnie, nie należy stosować dużej siły podczas odczytywania pinów znaku Braille'a oraz odłączać go od źródła zasilania w trakcie działania}
+
+
+\chapter{Użyte narzędzia}
+\section{Narzędzia użyte do stworzenia oprogramowania translatora}
+\begin{itemize}
+    \item VS Code -- bardzo wygodny edytor kodu, który wybrałam ze względu na wieloplatformowość i sporo dostępnych pluginów (m.in PlatformIO).
+    \item PlatformIO -- zintegrowane środowisko do kompilacji, wgrywania kodu źródłowego na ESP32.
+    \item C++ -- użyty ze względu na szeroką kompatybilność z interfejsem Arduino do programowania mikrokontrolerów.
+    \item \texttt{Arduino.h} -- używana do programowania ESP32 w prosty sposób.
+    \item \texttt{BluetoothSerial.h} -- używana do postawienia kanału i dalszej komunikacji mikrokontrolera z aplikacją.
+    \item \texttt{ESP32Servo.h} -- daje prosty interfejs do kontroli pozycji serwa.
+    \item GitHub Copilot -- użyty do poprawy składni i generowania żmudnych odwzorowań znaków na piny.
+\end{itemize}
+
+    % Część dla programistów, w tym wykaz narzędzi użytych w projekcie, z uzasadnieniem wyboru oraz opis struktury projektu, ewentualnie, dokumentacja (jeśli nie jest częścią źródeł)
+\section{Narzędzia użyte do stworzenia aplikacji}
+\begin{itemize}
+    \item Android Studio -- najlepsze znane mi środowisko do wytwarzania aplikacji na Androida. Wybrałam też dlatego, że daje możliwość emulowania i podglądu interfejsu graficznego.
+    \item Kotlin -- powszechnie rekomendowany język programowania androidowych aplikacji, wspierany przez Android Studio.
+    \item Google ML Kit Text recognition v2 -- użyty do rozpoznawania tekstu ze zdjęcia. Główna zaletą jest to, że działa bez dostępu do internetu.
+    \item ChatGPT -- do nauki składni i poprawy kodu w Kotlinie.
+\end{itemize}
+
+\chapter{Przypadki użycia}
+    % Przypadki użycia demonstrujące reprezentatywnie system/program.
+\section{Wykonanie zdjęcia za pomocą aplikacji}
+Aktor: Osoba niewidoma posiadająca smartfona z Androidem i zainstalowaną aplikacją TextToBraille.
+
+Przypadek użycia: Osoba naciska guzik \textit{Photo} co otwiera systemową aplikację do robienia zdjęć. Następnie osoba wykonuje zdjęcie tekstu, który chce przeczytać. 
+Zdjęcie zostaje zrobione. Osoba potwierdza chęć przetworzenia tego zdjęcia, poprzez kliknięcie \textit{akceptuj}. Zdjęcie zostaje przetworzone na tekst, 
+który zostaje wyświetlony w aplikacji.
+
+\section{Przesłanie tekstu do translatora}
+Aktor: Osoba niewidoma posiadająca już tekst w aplikacji TextToBraille.
+
+Przypadek użycia: 
+Osoba naciska guzik \textit{Connect}, co inicjuje połączenie z translatorem. Następnie klika guzik \textit{Send}, po czym tekst z aplikacji zostaje przesłany do translatora. 
+Translator natychmiast zaczyna wyświetlać litery tekstu w alfabecie Braille'a.
+
+\section{Zakończenie połączenia z translatorem}
+Aktor: Osoba niewidoma z uruchomioną aplikacją TextToBraille i połączonym po Bluetooth translatorem.
+
+Przypadek użycia:
+Osoba naciska guzik \textit{Disconnect}, a to powoduje zakończenie połączenia po stronie smartfona. Do chwili ponownego nawiązania połączenia, nie ma możliwości przesłania zeskanowanego tekstu.
+
+
+\chapter{Dalsze kroki rozwoju projektu}
+\section{Moje wnioski}
+Stworzenie tego projektu było naprawdę trudne. Wielu ze wspomnianych wcześniej narzędzi wcześniej nie używałam, także było to poznawanie ich praktycznie od zera. 
+Wymagało to ode mnie sporo czasu i nauczenia się nowych umiejętności z różnych obszarów jak np:
+\begin{itemize}
+    \item lutowanie i obsługa elementów elektronicznych,
+    \item programowanie w języku Kotlin,
+    \item rozeznanie w Android Studio,
+    \item planowanie i organizacja.
+\end{itemize}
+
+Podsumowując nakład czasowy poświęcony na rozwój projektu, wygląda to tak:
+Na sam research dotyczący projektu, poświęciłam około 15h. 
+Na składaniu translatora i poprawiania problemów z nim związanych około 42h. 
+Na tworzeniu kodu aplikacji jak i dla mikrokontrolera około 18h.
+Na spisywanie pracy inżynierskiej w Latexu ok. 16h.
+
+\section{Szacowany koszt wytworzenia prototypu}
+\begin{itemize}
+    \item ESP32 WiFi+BT 4.2 WROOM-32 -- \textbf{22.49 PLN}.
+    \item Trzy mikroserwa 3.3V -- \textbf{14.90 PLN x 3}.
+    \item Trzy mikroserwa 5V -- \textbf{17.90 PLN x 3}.
+    \item Sześć walców o 20mm x 6mm -- \textbf{0.70 PLN}.
+    \item Uniwersalna płytka PCB -- \textbf{3 PLN}.
+    \item Trzy konwertery poziomów logicznych napięć -- \textbf{2.50 PLN x 3}.
+    \item Kabel USB-C -- \textbf{3.47 PLN}.
+\end{itemize}
+Sumarycznie: \textbf{135.56 PLN} a więc zdecydowanie mniej niż 800 USD
+
+
+\section{Potencjalne usprawnienia do projektu}
+\begin{itemize}
+    \item Dodatkowa weryfikacja połączenia Bluetooth w kodzie mikrokontrolera.
+    \item Dostosowanie interfejsu aplikacji pod niewidomych.
+    \item Stworzenie odpowiednika aplikacji na IOS.
+    \item Modyfikacja rozmiaru i działania konstrukcji.
+    \item Otwartoźródłowy model do rozpoznawania tekstu zamiast od Google.
+\end{itemize}
+
+
+%%%%% BIBLIOGRAFIA
+
+\printbibliography[
+    title={Bibliografia},
+    heading=bibintoc 
+]
+
+\end{document}
