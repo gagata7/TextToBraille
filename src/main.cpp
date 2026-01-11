@@ -81,7 +81,7 @@ void charToBraille(char l);
 
 void pin_up(int id);
 void pin_down(int id);
-
+void display_reset();
 
 // this will run only once:
 void setup() {
@@ -95,12 +95,18 @@ void setup() {
 	d.attach(14);
 	e.attach(13);
 	f.attach(27);
+
+	// reset all pins before displaying
+	display_reset();
 }
 
 
 int i = 0;
 void loop() {
-	if (SerialBT.available()){
+	if (!SerialBT.hasClient())
+		display_reset();
+
+	if (SerialBT.hasClient() and SerialBT.available()){
 		char letter = SerialBT.read();
 		Serial.println(letter);
 		charToBraille(tolower(letter));
@@ -194,6 +200,12 @@ void charToBraille(char l){
 		display_letter(l);
 }
 
+void display_reset(){
+	for(int i = 1; i <= 6; i++)
+		pin_down(i);
+	while(SerialBT.available())
+		SerialBT.read();
+}
 
 // void textToBraille(string &t){
 // 	for(int i = 0; i < t.size(); i++){
