@@ -12,10 +12,10 @@ using namespace std;
 
 #define UP_POSITION 170
 #define DOWN_POSITION 150
+#define SLOW_DOWN 10
 
 
 // declarations here: 
-// int8_t pin[7] = {0, 27, 13, 14, 32, 33, 25};
 uint32_t mask = 0;
 int8_t size = 0;
 int8_t pin_number = 0;
@@ -89,12 +89,19 @@ void setup() {
 	SerialBT.begin("TextToBraille");
 
 	// this is exactly how my servos are connected to GPIO pins
+	// a-b == 1-6
 	a.attach(25);
+	delay(SLOW_DOWN);
 	b.attach(33);
+	delay(SLOW_DOWN);
 	c.attach(32);
+	delay(SLOW_DOWN);
 	d.attach(14);
+	delay(SLOW_DOWN);
 	e.attach(13);
+	delay(SLOW_DOWN);
 	f.attach(27);
+	delay(SLOW_DOWN);
 
 	// reset all pins before displaying
 	display_reset();
@@ -146,6 +153,7 @@ void pin_up(int id){
 			f.write(UP_POSITION);
 			break;
 	}
+	delay(SLOW_DOWN);
 }
 
 void pin_down(int id){
@@ -169,6 +177,7 @@ void pin_down(int id){
 			f.write(DOWN_POSITION);
 			break;
 	}
+	delay(SLOW_DOWN);
 }
 
 
