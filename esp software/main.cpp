@@ -5,11 +5,6 @@
 #include <ESP32Servo.h>
 using namespace std;
 
-// wires are connected like this:
-//    D27 (1)   D32 (4)
-//    D13 (2)   D33 (5)
-//    D14 (3)   D25 (6)
-
 #define UP_POSITION 170
 #define DOWN_POSITION 150
 #define SLOW_DOWN 10
@@ -27,7 +22,7 @@ BluetoothSerial SerialBT;
 Servo a,b,c,d,e,f;
 
 std::map<char, vector<int8_t> > mapping = {
-	// latin alphabet letters
+    // latin alphabet letters
     {'a', {1}},        // ⠁
     {'b', {1,2}},      // ⠃
     {'c', {1,4}},      // ⠉
@@ -56,7 +51,7 @@ std::map<char, vector<int8_t> > mapping = {
     {'z', {1,3,5,6}},   // ⠵
 
 	// special signs
-	{'~', {3,4,5,6}}, // before every continuos number sequence
+	{'~', {3,4,5,6}}, // before every continuos number sequence ~a = 1, ~b = 2 ...
 	{'#', {4,6}}, // before every capital letter
 	{' ', {}}, // for space
 
@@ -74,33 +69,29 @@ std::map<char, vector<int8_t> > mapping = {
 
 // function declarations:
 void charToBraille(char l);
-
-// here is another function for applying charToBraille() for
-// all letters from some long text
-// void textToBraille(String &t);
-
 void pin_up(int id);
 void pin_down(int id);
 void display_reset();
 
+
 // this will run only once:
 void setup() {
-	Serial.begin(9600); // this is optimal baud-rate - I TESTED IT MYSELF
-	SerialBT.begin("TextToBraille");
+	Serial.begin(9600);
+	SerialBT.begin("TextToBraille"); // so ESP will be seen as "TextToBraille" device
 
 	// this is exactly how my servos are connected to GPIO pins
-	// a-b == 1-6
-	a.attach(25);
+	// numbers refer to servos just like in photos/servos_mechanism.jpg
+	a.attach(25); // 1
 	delay(SLOW_DOWN);
-	b.attach(33);
+	b.attach(33); // 2
 	delay(SLOW_DOWN);
-	c.attach(32);
+	c.attach(32); // 3
 	delay(SLOW_DOWN);
-	d.attach(14);
+	d.attach(14); // 4
 	delay(SLOW_DOWN);
-	e.attach(13);
+	e.attach(13); // 5
 	delay(SLOW_DOWN);
-	f.attach(27);
+	f.attach(27); // 6
 	delay(SLOW_DOWN);
 
 	// reset all pins before displaying
@@ -215,9 +206,3 @@ void display_reset(){
 	while(SerialBT.available())
 		SerialBT.read();
 }
-
-// void textToBraille(string &t){
-// 	for(int i = 0; i < t.size(); i++){
-// 		charToBraille(t[i]);
-// 	}
-// }
