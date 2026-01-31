@@ -2,18 +2,20 @@
 This is my Bachelor's Thesis project - Change any text into tactile Braille output, by simply scanning chosen text with the TextToBraille app
 
 # How it works
-You choose some text (preferably from a book), open TextToBraille app, then take a photo of this text.
+You choose some text (high-contrast for best results), open TextToBraille app, then take a photo of this text.
 After accepting the photo, AI is extracting all characters from it and sends it further onto ESP32-based translator. Lastly, translator device is displaying character's Braille representation, one by one.
 
 *Currently app is designed specifically for Android devices, IOS version is still in development...*
 
 # What's in this repo and how to find it
-This repo consists of three parts and each of it has it's separate directory:
-- texttobraille .apk package,
-- ESP32 code (such as Bluetooth connecting and translation to Braille),
-- my thesis paper, both in ENG and PL with an architecture and implementation details.
+This repo consists of four directories, and the .apk file:
+- photos (with some photos of my assembled device and app's interface)
+- app software (where all app's source code is zipped into one file)
+- esp software (it has only main.cpp for ESP and PlatformIO configuration file with all plugins I used)
+- thesis papers (there is my thesis both in EN and PL with idea explained)
+- texttobraille.apk file (which is needed for using the translator)
 
-# Which ESP32 I used
+# Which ESP32 board I used
 I used *ESP32 WiFi+BT 4.2 WROOM-32*
 
 # How to install TextToBraille app:
@@ -29,14 +31,16 @@ I used *ESP32 WiFi+BT 4.2 WROOM-32*
 
 
 # How to use the app
-There are four buttons - each functionality as it's written on them.
-In order for it to work, first you need to connect your Android device to the translator by turning on Bluetooth in settings, and clicking Connect button on the apps' screen.
+There are four buttons: Pair, Disconnect, Photo and Send.
+![TextToBraille app interface][photos/app_interface.png]
 
-Now you may prepare some text, shoot a nice photo of it by clicking Photo button.
+First, you want to connect your Android device to the translator by turning on Bluetooth in settings, and clicking Pair button on the apps' screen.
 
-Then if your device is connected, you should be able to send the visible scanned text from the apps' screen onto translator.
+Now, you may prepare some text, and shoot a clear photo of it by clicking Photo button.
 
-After successfull connecting device to translator, it's possible to disconnect it by clicking a dedicated button.
+Then, if your device has been paired, you should be able to send the scanned text from the text field onto translator.
+
+After successfull pairing device with translator, it's possible to disconnect it by clicking a dedicated button.
 
 
-# If you have some idea that you think might improve this project - you may reach to me here: *agatapokorska7@gmail.com*
+# If you have an idea that you think might improve this project - you may reach me here: *agatapokorska7@gmail.com*
