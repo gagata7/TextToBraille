@@ -32,7 +32,6 @@ I used *ESP32 WiFi+BT 4.2 WROOM-32*
 
 # How to use the app
 There are four buttons: Pair, Disconnect, Photo and Send.
-![TextToBraille app interface][photos/app_interface.png]
 
 First, you want to connect your Android device to the translator by turning on Bluetooth in settings, and clicking Pair button on the apps' screen.
 
